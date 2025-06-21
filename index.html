@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ulang Tahun Yuni sri maulina ke 22</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffe6f0, #ff99cc);
+      font-family: 'Fredoka One', sans-serif;
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 3.5em;
+      color: #ff3399;
+      margin: 20px 0;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .balloon {
+      position: absolute;
+      width: 100px;
+      z-index: 0;
+    }
+
+    .balloon-hbd { animation: float-hbd 6s infinite; }
+    .balloon-love { animation: float-love 8s infinite; }
+    .balloon-cake { animation: float-cake 7s infinite; }
+
+    @keyframes float-hbd {
+      0% { transform: translateY(100vh) rotate(0deg); }
+      50% { transform: translateY(50vh) rotate(10deg); }
+      100% { transform: translateY(-100px) rotate(-10deg); }
+    }
+
+    @keyframes float-love {
+      0% { transform: translateY(100vh) rotate(-5deg); }
+      50% { transform: translateY(40vh) rotate(5deg); }
+      100% { transform: translateY(-150px) rotate(-5deg); }
+    }
+
+    @keyframes float-cake {
+      0% { transform: translateY(100vh) rotate(5deg); }
+      50% { transform: translateY(60vh) rotate(-5deg); }
+      100% { transform: translateY(-120px) rotate(5deg); }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .grid img {
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .modal img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+    }
+
+    .slide-container {
+      position: relative;
+      height: 150px;
+      margin: 20px auto;
+      width: 80%;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      font-size: 1.5em;
+      color: #ff66b2;
+      padding: 20px;
+    }
+
+    .video-slide-container {
+      position: relative;
+      width: 50%;
+      height: 0;
+      padding-bottom: 56.25%;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .video-slide {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .video-slide video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    button {
+      background-color: #ff99cc;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-family: 'Fredoka One', sans-serif;
+      transition: background-color 0.3s;
+      z-index: 5;
+    }
+
+    button:hover {
+      background-color: #ff3399;
+    }
+
+    .delete-btn {
+      background-color: #ff6666;
+      padding: 5px 10px;
+      font-size: 0.8em;
+    }
+
+    .delete-btn:hover {
+      background-color: #ff3333;
+    }
+
+    #quiz {
+      padding: 20px;
+    }
+
+    #answers button {
+      display: block;
+      width: 200px;
+      margin: 10px auto;
+    }
+
+    #dino-game {
+      padding: 20px;
+      margin: 20px auto;
+      width: 80%;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      position: relative;
+    }
+
+    #game-canvas {
+      border: 2px solid #ff66b2;
+      border-radius: 5px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #game-instructions, #game-score {
+      margin: 10px 0;
+      text-align: center;
+    }
+
+    #jump-button {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ff99cc;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.2em;
+      color: #fff;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    #jump-button:hover {
+      background-color: #ff3399;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 2em; }
+      .slide-container, #qa-section, #dino-game { width: 90%; }
+      .video-slide-container {
+        width: 80%;
+        padding-bottom: 56.25%;
+      }
+      .grid { grid-template-columns: 1fr; }
+      .balloon { width: 70px; }
+      #game-canvas {
+        width: 100%;
+        height: auto;
+      }
+      #header-canvas {
+        width: 100%;
+        height: 120px;
+      }
+    }
+
+    #qa-section {
+      padding: 20px;
+      margin: 20px auto;
+      width: 80%;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #qa-list {
+      text-align: left;
+      padding: 10px;
+    }
+
+    #qa-list div {
+      margin: 10px 0;
+      padding: 10px;
+      background: #ffe6f0;
+      border-radius: 5px;
+    }
+
+    #qa-form input, #qa-form button {
+      padding: 5px;
+      margin: 5px;
+    }
+
+    .answer-form {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .answer-form input {
+      width: 70%;
+      padding: 5px;
+    }
+
+    footer {
+      padding: 20px;
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    #surprise {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      color: #fff;
+      font-size: 1.5em;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    #surprise h2, #surprise p {
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+    }
+
+    #surprise p {
+      animation-delay: 1s;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #ff3399;
+      opacity: 0.8;
+      animation: fall 5s linear infinite;
+    }
+
+    .confetti:nth-child(odd) {
+      background: #ff99cc;
+    }
+
+    .confetti:nth-child(3n) {
+      background: #fff;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    #close-surprise {
+      background-color: #ff3399;
+      margin-top: 20px;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 10px;
+    }
+
+    #close-surprise:hover {
+      background-color: #ff66b2;
+    }
+
+    #header-canvas {
+      display: block;
+      margin: 0 auto;
+      width: 600px;
+      height: 150px;
+    }
+
+    .music-instruction {
+      font-size: 1.2em;
+      color: #ff66b2;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>✨Happy Birthday Ke22 Sayangkuuu Yuni sri maulina🎉!</h1>
+    <canvas id="header-canvas" width="600" height="150"></canvas>
+    <img src="ballon2.png" class="balloon balloon-hbd" style="left: 10%;">
+    <img src="ballon1.png" class="balloon balloon-love" style="left: 25%;">
+    <img src="ballon1.png" class="balloon balloon-cake" style="left: 65%;">
+    <img src="ballon2.png" class="balloon balloon-love" style="left: 80%;">
+    <img src="ballon3.png" class="balloon balloon-hbd" style="left: 40%;">
+  </header>
+
+  <p class="music-instruction">Kami Para kucing oyen menyarankan untuk kamu memutar musik di bawah ini,Sebelum kamu memulai Ultah kamu yg ke 22😻!</p>
+  <button onclick="playMusic()">Putar Musik</button>
+
+  <section id="gallery">
+    <h2>Kenangan</h2>
+    <div class="grid">
+      <img src="photo1.jpeg" alt="Foto 1" onclick="openModal(0)">
+      <img src="photo2.jpeg" alt="Foto 2" onclick="openModal(1)">
+      <img src="photo4.jpeg" alt="Foto 3" onclick="openModal(2)">
+    </div>
+  </section>
+
+  <div id="photoModal" class="modal">
+    <img id="modalImage" src="" alt="Foto Besar">
+    <button onclick="prevPhoto()">Sebelumnya</button>
+    <button onclick="nextPhoto()">Selanjutnya</button>
+    <button onclick="closeModal()">Tutup</button>
+  </div>
+
+  <section id="slideshow">
+    <h2>Baca pesan di bawah ini yaaa</h2>
+    <div class="slide-container">
+      <div class="slide">Happy birthday, sayangg!, duh aku bingung mau ngomong apa yaaa,coba klik selanjutnya aja deh di bawah ini yaa</div>
+      <div class="slide">Intinya aku seneng banget rasanya aku bisa ada dalam momen spesial kamu hihihi,aku ga tau ini ulang tahun paling berkesan atau enggak dalam hidup kamu....</div>
+      <div class="slide">tapii intinya aku seneng setiap momen tuh sama kamu sayangg hehehe,ehh iyaa maap kalo web ya aga butut ya soalnya bukan anak IT wkwk😭!</div>
+      <div class="slide">Semoga di ultah kamu yang ke 22 ini kamu bisa menjadi versi terbaik diri kamu dalam hal apapun ya sayangg,selain itu aku juga bakal ada selalu di belakang kamu....</div>
+      <div class="slide">buat jadi support dalam hal apapun yang ingin kamu gapai di umur sekarang dan kedepanya I'll always be yours biggest supporter, I love you more cintakuu❤️😽🎉</div>
+    </div>
+    <button id="prev" onclick="prevSlide()">Sebelumnya</button>
+    <button id="next" onclick="nextSlide()">Selanjutnya</button>
+  </section>
+
+  <section id="video-slideshow">
+    <h2>Moment Alayy kamu saat masih Bocil berumur 21th🤗🫢</h2>
+    <div class="video-slide-container">
+      <div class="video-slide">
+        <video controls>
+          <source src="vidio1.mp4" type="video/mp4">
+          Ganti Vidio yang ini saja
+        </video>
+      </div>
+      <div class="video-slide">
+        <video controls>
+          <source src="vidio1.mp4" type="video/mp4">
+          Browsermu tidak mendukung elemen video.
+        </video>
+      </div>
+      <div class="video-slide">
+        <video controls>
+          <source src="vidio1.mp4" type="video/mp4">
+          Browsermu tidak mendukung elemen video.
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <section id="quiz">
+    <h2>Ada quest Nih buat Kita Tebak yaa dengan benar!</h2>
+    <div id="question"></div>
+    <div id="answers"></div>
+    <div id="result"></div>
+  </section>
+
+  <section id="dino-game">
+    <h2>Mainkan Kucing Ulang Tahun!</h2>
+    <div id="game-instructions">Karna kita berdua tuh suka main game dan kamu sering kalah karna cupu😏 jadi aku buatin game yang paling mudah wkwk, ayook coba Jangan sampai menabrak ya!!!</div>
+    <canvas id="game-canvas" width="600" height="200"></canvas>
+    <div id="game-score">Skor: 0</div>
+    <button id="jump-button">Lompat</button>
+  </section>
+
+  <section id="qa-section">
+    <h2>Tanya Jawab untuk Kita dong...</h2>
+    <div id="qa-form">
+      <input type="text" id="qa-question" placeholder="Masukkan pertanyaanmu...">
+      <button onclick="submitQuestion()">Kirim Pertanyaan</button>
+    </div>
+    <div id="qa-list"></div>
+  </section>
+
+  <div id="surprise">
+    <h2>Yahhh Kamu nabrak hahahaha!😫</h2>
+    <p> Gapapa walaupun kamu kalah di game Tapi dirimu selalu menang kok di hati aku ahayyy😽💕</p>
+    <button id="close-surprise" onclick="closeSurprise()">Tutup</button>
+  </div>
+
+  <footer>
+    <p>Dibuat dengan cinta oleh Rafly Sigma</p>
+  </footer>
+
+  <audio id="backgroundMusic" loop controls>
+    <source src="blue (slowed down).mp3" type="audio/mpeg">
+    Browsermu tidak mendukung elemen audio.
+  </audio>
+
+  <audio id="surpriseMusic" loop>
+    <source src="No" type="audio/mp4">
+    Browsermu tidak mendukung elemen audio.
+  </audio>
+
+  <script>
+    let currentSlide = 0;
+    let currentVideoSlide = 0;
+    let qaData = [];
+    let currentPhoto = 0;
+    const photos = [
+      'https://via.placeholder.com/150',
+      'https://via.placeholder.com/150',
+      'https://via.placeholder.com/150'
+    ];
+    let modal = null;
+    let modalImage = null;
+
+    function showSlide(index) {
+      const slides = document.querySelectorAll('.slide');
+      if (!slides.length) return;
+      const newIndex = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        slide.style.display = i === newIndex ? 'block' : 'none';
+      });
+      currentSlide = newIndex;
+    }
+
+    function nextSlide() {
+      showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      showSlide(currentSlide - 1);
+    }
+
+    function showVideoSlide(index) {
+      const videoSlides = document.querySelectorAll('.video-slide');
+      if (!videoSlides.length) return;
+      const newIndex = (index + videoSlides.length) % videoSlides.length;
+      videoSlides.forEach((slide, i) => {
+        slide.style.display = i === newIndex ? 'block' : 'none';
+      });
+      currentVideoSlide = newIndex;
+    }
+
+    function nextVideoSlide() {
+      showVideoSlide(currentVideoSlide + 1);
+    }
+
+    function prevVideoSlide() {
+      showVideoSlide(currentVideoSlide - 1);
+    }
+
+    function openModal(index) {
+      if (!modal || !modalImage) return;
+      currentPhoto = index;
+      modalImage.src = photos[currentPhoto];
+      modal.style.display = 'flex';
+    }
+
+    function nextPhoto() {
+      if (!modal || !modalImage) return;
+      currentPhoto = (currentPhoto + 1) % photos.length;
+      modalImage.src = photos[currentPhoto];
+    }
+
+    function prevPhoto() {
+      if (!modal || !modalImage) return;
+      currentPhoto = (currentPhoto - 1 + photos.length) % photos.length;
+      modalImage.src = photos[currentPhoto];
+    }
+
+    function closeModal() {
+      if (!modal) return;
+      modal.style.display = 'none';
+    }
+
+    function closeSurprise() {
+      const surprise = document.getElementById('surprise');
+      const surpriseAudio = document.getElementById('surpriseMusic');
+      if (!surprise) return;
+      surprise.style.display = 'none';
+      surpriseAudio.pause();
+      surpriseAudio.currentTime = 0;
+
+      const confettis = document.querySelectorAll('.confetti');
+      confettis.forEach(confetti => confetti.remove());
+    }
+
+    function submitQuestion() {
+      const questionInput = document.getElementById('qa-question');
+      const question = questionInput.value.trim();
+      if (question) {
+        qaData.push({ question: question, answer: '' });
+        try {
+          localStorage.setItem('qaData', JSON.stringify(qaData));
+        } catch (e) {
+          console.log("Error saving to localStorage:", e);
+        }
+        questionInput.value = '';
+        loadQA();
+      }
+    }
+
+    function toggleAnswerForm(index) {
+      const answerForm = document.getElementById(`answer-form-${index}`);
+      answerForm.style.display = answerForm.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function submitAnswer(index) {
+      const answerInput = document.getElementById(`answer-input-${index}`);
+      const answer = answerInput.value.trim();
+      if (answer) {
+        qaData[index].answer = answer;
+        try {
+          localStorage.setItem('qaData', JSON.stringify(qaData));
+        } catch (e) {
+          console.log("Error saving to localStorage:", e);
+        }
+        loadQA();
+      }
+    }
+
+    function deleteQA(index) {
+      qaData.splice(index, 1);
+      try {
+        localStorage.setItem('qaData', JSON.stringify(qaData));
+      } catch (e) {
+        console.log("Error saving to localStorage:", e);
+      }
+      loadQA();
+    }
+
+    function loadQA() {
+      const qaList = document.getElementById('qa-list');
+      qaList.innerHTML = '';
+      qaData.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <strong>Pertanyaan ${index + 1}:</strong> ${item.question}<br>
+          <strong>Jawaban:</strong> ${item.answer || 'Belum dijawab'}<br>
+          ${!item.answer ? `
+            <button onclick="toggleAnswerForm(${index})">Jawab</button>
+            <div class="answer-form" id="answer-form-${index}">
+              <input type="text" id="answer-input-${index}" placeholder="Masukkan jawaban...">
+              <button onclick="submitAnswer(${index})">Kirim Jawaban</button>
+            </div>
+          ` : ''}
+          <button class="delete-btn" onclick="deleteQA(${index})">Hapus</button>
+        `;
+        qaList.appendChild(div);
+      });
+    }
+
+    function playMusic() {
+      const audio = document.getElementById('backgroundMusic');
+      audio.play().catch(err => console.log("Error playing audio:", err));
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        qaData = JSON.parse(localStorage.getItem('qaData')) || [];
+      } catch (e) {
+        console.log("Error accessing localStorage:", e);
+        qaData = [];
+      }
+      loadQA();
+      showSlide(currentSlide);
+      showVideoSlide(currentVideoSlide);
+
+      const headerCanvas = document.getElementById('header-canvas');
+      const hctx = headerCanvas.getContext('2d');
+
+      function drawHeaderScene() {
+        if (!headerCanvas || !hctx) return;
+
+        hctx.clearRect(0, 0, headerCanvas.width, headerCanvas.height);
+
+        function drawCat(x, y) {
+          hctx.fillStyle = '#FFA500';
+          hctx.beginPath();
+          hctx.arc(x + 25, y + 15, 15, 0, Math.PI * 2);
+          hctx.fill();
+
+          hctx.fillStyle = '#FFA500';
+          hctx.beginPath();
+          hctx.moveTo(x + 15, y);
+          hctx.lineTo(x + 10, y + 15);
+          hctx.lineTo(x + 20, y + 15);
+          hctx.closePath();
+          hctx.fill();
+
+          hctx.beginPath();
+          hctx.moveTo(x + 35, y);
+          hctx.lineTo(x + 30, y + 15);
+          hctx.lineTo(x + 40, y + 15);
+          hctx.closePath();
+          hctx.fill();
+
+          hctx.fillStyle = '#FFA500';
+          hctx.fillRect(x + 15, y + 30, 20, 20);
+
+          hctx.strokeStyle = '#FFA500';
+          hctx.lineWidth = 3;
+          hctx.beginPath();
+          hctx.moveTo(x + 35, y + 40);
+          hctx.quadraticCurveTo(x + 50, y + 30, x + 60, y + 40);
+          hctx.stroke();
+
+          hctx.fillStyle = '#fff';
+          hctx.beginPath();
+          hctx.arc(x + 20, y + 15, 3, 0, Math.PI * 2);
+          hctx.arc(x + 30, y + 15, 3, 0, Math.PI * 2);
+          hctx.fill();
+
+          hctx.fillStyle = '#000';
+          hctx.beginPath();
+          hctx.arc(x + 20, y + 15, 1, 0, Math.PI * 2);
+          hctx.arc(x + 30, y + 15, 1, 0, Math.PI * 2);
+          hctx.fill();
+
+          hctx.fillStyle = '#ff3399';
+          hctx.beginPath();
+          hctx.moveTo(x + 25, y - 10);
+          hctx.lineTo(x + 15, y + 15);
+          hctx.lineTo(x + 35, y + 15);
+          hctx.closePath();
+          hctx.fill();
+
+          hctx.fillStyle = '#fff';
+          hctx.beginPath();
+          hctx.arc(x + 25, y - 10, 5, 0, Math.PI * 2);
+          hctx.fill();
+        }
+
+        function drawCake(x, y) {
+          hctx.fillStyle = '#8B4513';
+          hctx.fillRect(x, y + 20, 60, 30);
+
+          hctx.fillStyle = '#FFB6C1';
+          hctx.fillRect(x, y + 10, 60, 10);
+
+          hctx.fillStyle = '#FFFF99';
+          hctx.fillRect(x + 27, y, 6, 10);
+
+          hctx.fillStyle = '#FF4500';
+          hctx.beginPath();
+          hctx.moveTo(x + 30, y - 5);
+          hctx.lineTo(x + 27, y);
+          hctx.lineTo(x + 33, y);
+          hctx.closePath();
+          hctx.fill();
+        }
+
+        drawCat(100, 50);
+        drawCat(400, 50);
+        drawCat(250, 90);
+        drawCake(270, 40);
+      }
+
+      drawHeaderScene();
+
+      modal = document.getElementById('photoModal');
+      modalImage = document.getElementById('modalImage');
+
+      const questions = [
+        { question: "Hewan apa yang ga bisa ngomong?", answers: ["gajah", "macan", "semute"], correct: 2 },
+        { question: "Makanan favorit Rafly?", answers: ["Mie ayam", "Ayam goreng", "Semuanya di makan"], correct: 1 },
+        { question: "Hobi kita berdua?", answers: ["Membaca dan olahraga", "Rebahan dan Tidur", "Mancing masalah dan main game"], correct: 0 },
+        { question: "Apa tradisi ulang tahun yang selalu dilakukan orang-orang?", answers: ["Kayang", "Berdoa", "Party"], correct: 2 },
+        { question: "Siapa Menurut Kalian Orang yg tercantik?", answers: ["Pacar Rafly", "Pacar rafly lagi", "Cuman pacar rafly"], correct: 2 },
+        { question: "Sayuran apa yang paling susah dilupain?", answers: ["Sayur kol", "Kangkung", "Bayam-bayam dirimu hehehe"], correct: 1 }
+      ];
+      let currentQuestion = 0;
+      let score = 0;
+
+      function displayQuestion() {
+        const q = questions[currentQuestion];
+        document.getElementById('question').textContent = q.question;
+        const answersDiv = document.getElementById('answers');
+        answersDiv.innerHTML = '';
+        q.answers.forEach((answer, index) => {
+          const btn = document.createElement('button');
+          btn.textContent = answer;
+          btn.onclick = () => checkAnswer(index);
+          answersDiv.appendChild(btn);
+        });
+      }
+
+      function checkAnswer(selected) {
+        if (selected === questions[currentQuestion].correct) score++;
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          displayQuestion();
+        } else {
+          document.getElementById('result').textContent = `Skor kamu: ${score} dari ${questions.length}`;
+          document.getElementById('answers').innerHTML = '';
+        }
+      }
+
+      displayQuestion();
+
+      const surpriseAudio = document.getElementById('surpriseMusic');
+
+      const canvas = document.getElementById('game-canvas');
+      const ctx = canvas.getContext('2d');
+      const gameScore = document.getElementById('game-score');
+      const jumpButton = document.getElementById('jump-button');
+      const surprise = document.getElementById('surprise');
+
+      let cat = { x: 50, y: 150, width: 50, height: 50, dy: 0, gravity: 0.6, jumpPower: -15, isJumping: false };
+      let obstacles = [];
+      let gameScoreValue = 0;
+      let gameSpeed = 5;
+      let gameOver = false;
+      let frame = 0;
+      let gameStarted = false;
+
+      function spawnObstacle() {
+        const isTall = Math.random() > 0.5;
+        const height = isTall ? 50 : 30;
+        const obstacle = { x: canvas.width, y: 150, width: 30, height: height, isTall: isTall };
+        obstacles.push(obstacle);
+
+        if (Math.random() < 0.3) {
+          const secondObstacle = { x: canvas.width + 50, y: 150, width: 30, height: height, isTall: isTall };
+          obstacles.push(secondObstacle);
+        }
+      }
+
+      function drawCat() {
+        ctx.fillStyle = '#FFA500';
+        ctx.beginPath();
+        ctx.arc(cat.x + 25, cat.y + 15, 15, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#FFA500';
+        ctx.beginPath();
+        ctx.moveTo(cat.x + 15, cat.y);
+        ctx.lineTo(cat.x + 10, cat.y + 15);
+        ctx.lineTo(cat.x + 20, cat.y + 15);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(cat.x + 35, cat.y);
+        ctx.lineTo(cat.x + 30, cat.y + 15);
+        ctx.lineTo(cat.x + 40, cat.y + 15);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#FFA500';
+        ctx.fillRect(cat.x + 15, cat.y + 30, 20, 20);
+
+        ctx.strokeStyle = '#FFA500';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(cat.x + 35, cat.y + 40);
+        ctx.quadraticCurveTo(cat.x + 50, cat.y + 30, cat.x + 60, cat.y + 40);
+        ctx.stroke();
+
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(cat.x + 20, cat.y + 15, 3, 0, Math.PI * 2);
+        ctx.arc(cat.x + 30, cat.y + 15, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(cat.x + 20, cat.y + 15, 1, 0, Math.PI * 2);
+        ctx.arc(cat.x + 30, cat.y + 15, 1, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ff3399';
+        ctx.beginPath();
+        ctx.moveTo(cat.x + 25, cat.y - 10);
+        ctx.lineTo(cat.x + 15, cat.y + 15);
+        ctx.lineTo(cat.x + 35, cat.y + 15);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(cat.x + 25, cat.y - 10, 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function drawObstacles() {
+        obstacles.forEach(obstacle => {
+          const baseColor = obstacle.isTall ? '#8B4513' : '#5A2D0C';
+          const frostingColor = obstacle.isTall ? '#FFB6C1' : '#FF8C94';
+
+          ctx.fillStyle = baseColor;
+          ctx.fillRect(obstacle.x, obstacle.y + (obstacle.isTall ? 20 : 10), obstacle.width, obstacle.height - (obstacle.isTall ? 20 : 10));
+          ctx.fillStyle = frostingColor;
+          ctx.fillRect(obstacle.x, obstacle.y + (obstacle.isTall ? 10 : 5), obstacle.width, obstacle.isTall ? 10 : 5);
+          ctx.fillStyle = '#FFFF99';
+          ctx.fillRect(obstacle.x + 12, obstacle.y, 6, obstacle.isTall ? 10 : 5);
+          ctx.fillStyle = '#FF4500';
+          ctx.beginPath();
+          ctx.moveTo(obstacle.x + 15, obstacle.y - 5);
+          ctx.lineTo(obstacle.x + 12, obstacle.y);
+          ctx.lineTo(obstacle.x + 18, obstacle.y);
+          ctx.closePath();
+          ctx.fill();
+        });
+      }
+
+      function update() {
+        if (!canvas || !ctx) return;
+
+        if (!gameStarted) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#ccc';
+          ctx.fillRect(0, 180, canvas.width, 20);
+          ctx.fillStyle = '#ff3399';
+          ctx.font = '20px sans-serif';
+          ctx.fillText('Tekan Spasi atau Tombol Lompat untuk Mulai!', 100, 100);
+          drawCat();
+          return;
+        }
+
+        if (gameOver) {
+          showSurprise();
+          return;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#ccc';
+        ctx.fillRect(0, 180, canvas.width, 20);
+
+        cat.dy += cat.gravity;
+        cat.y += cat.dy;
+
+        if (cat.y > 150) {
+          cat.y = 150;
+          cat.dy = 0;
+          cat.isJumping = false;
+        }
+
+        if (frame % 100 === 0) {
+          spawnObstacle();
+        }
+
+        obstacles.forEach((obstacle, index) => {
+          obstacle.x -= gameSpeed;
+          if (obstacle.x + obstacle.width < 0) {
+            obstacles.splice(index, 1);
+          }
+
+          if (
+            cat.x < obstacle.x + obstacle.width &&
+            cat.x + cat.width > obstacle.x &&
+            cat.y < obstacle.y + obstacle.height &&
+            cat.y + cat.height > obstacle.y
+          ) {
+            gameOver = true;
+            if (gameScore) gameScore.textContent = `Yahh km nabrak ayok cobalagii! Skor: ${Math.floor(gameScoreValue)}`;
+          }
+        });
+
+        if (!gameOver && gameScore) {
+          gameScoreValue += 0.1;
+          const speedIncreaseThreshold = Math.floor(gameScoreValue / 100);
+          gameSpeed = 5 + speedIncreaseThreshold;
+          gameScore.textContent = `Skor: ${Math.floor(gameScoreValue)}`;
+        }
+
+        drawCat();
+        drawObstacles();
+
+        frame++;
+        requestAnimationFrame(update);
+      }
+
+      function handleJump(e) {
+        e.preventDefault();
+        if (!canvas || !ctx) return;
+
+        if (!gameStarted) {
+          gameStarted = true;
+          update();
+          return;
+        }
+
+        if (!cat.isJumping && !gameOver) {
+          cat.dy = cat.jumpPower;
+          cat.isJumping = true;
+        } else if (gameOver) {
+          cat.y = 150;
+          cat.dy = 0;
+          obstacles = [];
+          gameScoreValue = 0;
+          gameSpeed = 5;
+          gameOver = false;
+          gameStarted = false;
+          frame = 0;
+          update();
+        }
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') {
+          handleJump(e);
+        }
+      });
+
+      if (jumpButton) {
+        jumpButton.addEventListener('touchstart', handleJump);
+        jumpButton.addEventListener('click', handleJump);
+      }
+
+      function showSurprise() {
+        if (!surprise) return;
+        if (surprise.style.display === 'flex') return;
+
+        surprise.style.display = 'flex';
+
+        for (let i = 0; i < 50; i++) {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = `${Math.random() * 100}vw`;
+          confetti.style.animationDelay = `${Math.random() * 5}s`;
+          document.body.appendChild(confetti);
+        }
+
+        surpriseAudio.play().catch(err => console.log("Error playing surprise audio:", err));
+      }
+
+      update();
+    });
+  </script>
+</body>
+</html>
